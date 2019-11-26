@@ -1,0 +1,98 @@
+#!/bin/bash
+
+# usage: tailcolor path/to/file red="FATAL,ERROR" yellow="DEBUG" magenta="WARN" cyan="INFO" white="TRACE"
+
+FILE=$1
+
+BLACK="0"
+RED="1"
+GREEN="2"
+YELLOW="3"
+BLUE="4"
+MAGENTA="5"
+CYAN="6"
+WHITE="7"
+
+BASE_COLOR="3"
+
+LEFT_PART="s#.*"
+CENTRAL_PART_WITHOUT_BASE_COLOR='#\x1b['
+CENTRAL_PART="$CENTRAL_PART_WITHOUT_BASE_COLOR$BASE_COLOR"
+RIGHT_PART="m&#; "
+
+SED_COMMAND=""
+
+BLACK_VALUE=""
+RED_VALUE=""
+GREEN_VALUE=""
+YELLOW_VALUE=""
+BLUE_VALUE=""
+MAGENTA_VALUE=""
+CYAN_VALUE=""
+WHITE_VALUE=""
+
+append_to_sed_command() {
+	COLOR=$1
+	COLOR_VALUE=$2
+	for CURRENT_COLOR_VALUE in $(echo $COLOR_VALUE | tr "," "\n")
+	do
+		SED_COMMAND="$SED_COMMAND$LEFT_PART$CURRENT_COLOR_VALUE$CENTRAL_PART$COLOR$RIGHT_PART"
+	done
+}
+
+for i in "$@"
+do
+	case $i in
+		black=*)
+		BLACK_VALUE="${i#*=}"
+		append_to_sed_command $BLACK $BLACK_VALUE
+		shift
+		;;
+		red=*)
+		RED_VALUE="${i#*=}"
+		append_to_sed_command $RED $RED_VALUE
+		shift # past argument=value
+		;;
+		green=*)
+		GREEN_VALUE="${i#*=}"
+		append_to_sed_command $GREEN $GREEN_VALUE
+		shift # past argument=value
+		;;
+		yellow=*)
+		YELLOW_VALUE="${i#*=}"
+		append_to_sed_command $YELLOW $YELLOW_VALUE
+		shift # past argument=value
+		;;
+		blue=*)
+		BLUE_VALUE="${i#*=}"
+		append_to_sed_command $BLUE $BLUE_VALUE
+		shift # past argument=value
+		;;
+		magenta=*)
+		MAGENTA_VALUE="${i#*=}"
+		append_to_sed_command $MAGENTA $MAGENTA_VALUE
+		shift # past argument=value
+		;;
+		cyan=*)
+		CYAN_VALUE="${i#*=}"
+		append_to_sed_command $CYAN $CYAN_VALUE
+		shift # past argument=value
+		;;
+		white=*)
+		WHITE_VALUE="${i#*=}"
+		append_to_sed_command $WHITE $WHITE_VALUE
+		shift # past argument=value
+		;;
+		*)
+			# unknown option
+		;;
+	esac
+done
+
+tail -f $FILE | sed "$SED_COMMAND"
+
+# Colors
+# 30 - black   34 - blue          40 - black    44 - blue
+# 31 - red     35 - magenta       41 - red      45 - magenta
+# 32 - green   36 - cyan          42 - green    46 - cyan
+# 33 - yellow  37 - white         43 - yellow   47 - white
