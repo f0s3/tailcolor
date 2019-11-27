@@ -31,9 +31,3 @@ My suggestion is to simply close the terminal tab in which the installation happ
 `tailcolor path/to/file black="black" white="white" yellow="yellow" cyan="cyan" magenta="magenta" red="red" green="green" blue="blue"`
 
 You can put regexes in any colors' value, like cyan="\sINFO".
-
-# Changing the keywords
-
-If you want to change the words on which the color is applied, edit the script.
-
-NOTE: This documentation's section is in process of writing so I will update it as soon as I implement some of the functionality needed to change the keywords on-the-fly.
