@@ -28,7 +28,9 @@ My suggestion is to simply close the terminal tab in which the installation happ
 
 # Usage
 
-`tailcolor path/to/file`
+`tailcolor path/to/file black="black" white="white" yellow="yellow" cyan="cyan" magenta="magenta" red="red" green="green" blue="blue"`
+
+You can put regexes in any colors' value, like cyan="\sINFO".
 
 # Changing the keywords
 
