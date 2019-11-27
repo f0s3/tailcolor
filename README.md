@@ -6,11 +6,11 @@ tail -f that can now make colorful lines using the words provided in the script
 
 bash users:
 
-`cd /usr/bin && git clone https://github.com/f0s3/tailcolor && cd tailcolor && echo "export PATH=\$PATH:$(pwd)" >> ~/.bashrc`
+`cd /usr/bin && sudo git clone https://github.com/f0s3/tailcolor && cd tailcolor && echo "export PATH=\$PATH:$(pwd)" >> ~/.bashrc && sudo chmod +x tailcolor`
 
 zsh users:
 
-`cd /usr/bin && git clone https://github.com/f0s3/tailcolor && cd tailcolor && echo "export PATH=\$PATH:$(pwd)" >> ~/.zshrc`
+`cd /usr/bin && sudo git clone https://github.com/f0s3/tailcolor && cd tailcolor && echo "export PATH=\$PATH:$(pwd)" >> ~/.zshrc && sudo chmod +x tailcolor`
 
 IMPORTANT: Restart your bash or zsh for changes to apply, or run:
 
