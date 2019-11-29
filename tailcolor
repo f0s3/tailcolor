@@ -15,12 +15,21 @@ WHITE="7"
 
 BASE_COLOR="3"
 
-LEFT_PART="s#.*"
+LEFT_PART=" -e s#.*"
 CENTRAL_PART_WITHOUT_BASE_COLOR='#\x1b['
-CENTRAL_PART="$CENTRAL_PART_WITHOUT_BASE_COLOR$BASE_COLOR"
-RIGHT_PART="m&#; "
+CENTRAL_PART=$CENTRAL_PART_WITHOUT_BASE_COLOR$BASE_COLOR
+RIGHT_PART="m&# "
 
-SED_COMMAND=""
+SED_COMMAND='sed'
+
+for i in "$@"
+do
+	if [[ $i == "--jboss-align" ]]; then
+		SED_COMMAND="sed -re s#n..\|.#\n#gm"
+	else
+		SED_COMMAND='sed'
+	fi
+done
 
 BLACK_VALUE=""
 RED_VALUE=""
@@ -36,7 +45,7 @@ append_to_sed_command() {
 	COLOR_VALUE=$2
 	for CURRENT_COLOR_VALUE in $(echo $COLOR_VALUE | tr "," "\n")
 	do
-		SED_COMMAND="$SED_COMMAND$LEFT_PART$CURRENT_COLOR_VALUE$CENTRAL_PART$COLOR$RIGHT_PART"
+		SED_COMMAND=$SED_COMMAND$LEFT_PART$CURRENT_COLOR_VALUE$CENTRAL_PART$COLOR$RIGHT_PART
 	done
 }
 
@@ -89,7 +98,9 @@ do
 	esac
 done
 
-tail -f $FILE | sed "$SED_COMMAND"
+COMMAND="tail -f $FILE "
+
+exec $COMMAND | $SED_COMMAND
 
 # Colors
 # 30 - black   34 - blue          40 - black    44 - blue
